@@ -1,0 +1,56 @@
+{
+	"core:devil" :
+	{
+		"attack" : 35,
+		"defense" : 15,
+		"damage" :
+		{
+			 "min" : 20,
+			 "max" : 60
+		},
+		"growth" : 1,
+		"hitPoints" : 160,
+		"speed" : 12,
+		"fightValue" : 4000,
+		"aiValue" : 4500,
+		"cost" :
+		{
+			"gold" : 3000,
+			"mercury" : 1
+		},
+		"abilities" :
+		{
+			"unlimitedRetaliation" :
+			{
+				"type" : "UNLIMITED_RETALIATIONS"
+			},
+		}
+	},
+	"core:archDevil" :
+	{
+		"attack" : 50,
+		"defense" : 20,
+		"damage" :
+		{
+			 "min" : 30,
+			 "max" : 80
+		},
+		"growth" : 1,
+		"hitPoints" : 200,
+		"speed" : 17,
+		"fightValue" : 6000,
+		"aiValue" : 8000,
+		"cost" :
+		{
+			"gold" : 5000,
+			"mercury" : 2
+		},
+		"abilities" :
+		{
+			"unlimitedRetaliation" :
+			{
+				"type" : "UNLIMITED_RETALIATIONS"
+			},
+		}
+	}
+}

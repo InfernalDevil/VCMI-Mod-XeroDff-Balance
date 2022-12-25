@@ -1,0 +1,83 @@
+{
+	"redDragon" :
+	{
+		"index": 82,
+		"level": 7,
+		"faction": "dungeon",
+		"abilities":
+		{
+			"dragon" : 
+			{
+				"type" : "DRAGON_NATURE"
+			},
+			"fireBreath" :
+			{
+				"type" : "TWO_HEX_ATTACK_BREATH"
+			},
+			"spellImmunity" :
+			{
+				"type" : "LEVEL_SPELL_IMMUNITY",
+				"val" : 3
+			}
+		},
+		"upgrades": ["blackDragon"],
+		"graphics" :
+		{
+			"animation": "CRDRGN.DEF"
+		},
+		"sound" :
+		{
+			"attack": "RDDRATTK.wav",
+			"defend": "RDDRDFND.wav",
+			"killed": "RDDRKILL.wav",
+			"move": "RDDRMOVE.wav",
+			"wince": "RDDRWNCE.wav"
+		}
+	},
+	"blackDragon" :
+	{
+		"index": 83,
+		"level": 7,
+		"faction": "dungeon",
+		"abilities":
+		{
+			"dragon" : 
+			{
+				"type" : "DRAGON_NATURE"
+			},
+			"fireBreath" :
+			{
+				"type" : "TWO_HEX_ATTACK_BREATH"
+			},
+			"spellImmunity" :
+			{
+				"type" : "LEVEL_SPELL_IMMUNITY",
+				"val" : 5
+			},
+			"hateGiants" :
+			{
+				"type" : "HATE",
+				"subtype" : "creature.giant",
+				"val" : 50
+			},
+			"hateTitans" :
+			{
+				"type" : "HATE",
+				"subtype" : "creature.titan",
+				"val" : 50
+			}
+		},
+		"graphics" :
+		{
+			"animation": "CBDRGN.DEF"
+		},
+		"sound" :
+		{
+			"attack": "BKDRATTK.wav",
+			"defend": "BKDRDFND.wav",
+			"killed": "BKDRKILL.wav",
+			"move": "BKDRMOVE.wav",
+			"wince": "BKDRWNCE.wav"
+		}
+	}
+}
