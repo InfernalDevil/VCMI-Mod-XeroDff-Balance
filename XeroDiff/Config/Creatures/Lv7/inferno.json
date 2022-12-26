@@ -29,7 +29,7 @@
 	"core:archDevil" :
 	{
 		"attack" : 50,
-		"defense" : 20,
+		"defense" : 23,
 		"damage" :
 		{
 			 "min" : 30,

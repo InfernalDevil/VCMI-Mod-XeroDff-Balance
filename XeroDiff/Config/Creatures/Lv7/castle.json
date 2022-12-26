@@ -1,5 +1,5 @@
 {
-	"angel" :
+	"core:angel" :
 	{
 		"index": 12,
 		"level": 7,
@@ -37,58 +37,13 @@
 			"wince": "ANGLWNCE.wav"
 		}
 	},
-	"archangel" :
+	"core:archangel" :
 	{
-		"index": 13,
-		"level": 7,
-		"faction": "castle",
-		"abilities":
-		{
-			"resurrection100hp" : 
-			{
-				"type" : "SPECIFIC_SPELL_POWER",
-				"subtype" : "spell.resurrection",
-				"val" : 100
-			},
-			"resurrects" :
-			{
-				"type" : "SPELLCASTER",
-				"subtype" : "spell.resurrection",
-				"val" : 3
-			},
-			"spellpoints" :
-			{
-				"type" : "CASTS",
-				"val" : 1
-			},
-			"hateDevils" :
-			{
-				"type" : "HATE",
-				"subtype" : "creature.devil",
-				"val" : 50
-			},
-			"hateArchDevils" :
-			{
-				"type" : "HATE",
-				"subtype" : "creature.archDevil",
-				"val" : 50
-			},
-			"const_raises_morale" :
-			{
-				"stacking" : "Angels"
-			}
-		},
-		"graphics" :
-		{
-			"animation": "CRANGL.DEF"
-		},
-		"sound" :
-		{
-			"attack": "AAGLATTK.wav",
-			"defend": "AAGLDFND.wav",
-			"killed": "AAGLKILL.wav",
-			"move": "AAGLMOVE.wav",
-			"wince": "AAGLWNCE.wav"
-		}
+		"attack" : 34,
+		"defense" : 35,
+		"hitPoints" : 300,
+		"speed" : 17,
+		"fightValue" : 6000,
+		"aiValue" : 8000
 	}
 }
