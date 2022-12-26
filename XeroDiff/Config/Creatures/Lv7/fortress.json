@@ -4,5 +4,19 @@
 	},
 	"core:chaosHydra" :
 	{
+		"attack": 19,
+		"defense": 21,
+		"fightValue" : 5116,
+		"aiValue" : 6198,
+		"speed" : 9,
+		"damage": {
+			"min": 32,
+			"max": 32
+		},
+		"cost" :
+		{
+			"gold" : 5000,
+			"sulphur" : 2
+		}
 	}
 }

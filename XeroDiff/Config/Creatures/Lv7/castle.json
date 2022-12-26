@@ -4,11 +4,11 @@
 	},
 	"core:archangel" :
 	{
-		"attack" : 33,
+		"attack" : 35,
 		"defense" : 35,
-		"hitPoints" : 300,
+		"hitPoints" : 290,
 		"speed" : 17,
-		"fightValue" : 6000,
-		"aiValue" : 8000
+		"fightValue" : 5320,
+		"aiValue" : 6541
 	}
 }

@@ -4,5 +4,29 @@
 	},
 	"core:phoenix" :
 	{
+		"attack" : 25,
+		"defense" : 40,
+		"growth" : 1,
+		"damage" :
+		{
+			 "min" : 40,
+			 "max" : 50
+		},
+		"fightValue" : 5095,
+		"hitPoints": 300,
+		"aiValue" : 6400,
+		"cost" :
+		{
+			"gold" : 5000,
+			"mercury" : 2
+		},
+		"abilities" :
+		{
+			"dodge" :
+			{
+				"type" : "GENERAL_ATTACK_REDUCTION",
+				"val": 20
+			},
+		}
 	}
 }

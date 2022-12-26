@@ -92,7 +92,6 @@ $AbilityBonus = @(
     @('CREATURE_SPELL_POWER', 0, 0, 0, 0, 0),
     @('CREATURE_ENCHANT_POWER', 0, 0, 0, 0, 0),
     @('DAEMON_SUMMONING', 7, 7, 0, 0, 0),
-    @('REBIRTH', 8, 8, 0, 0, 0),
     @('ENCHANTED', 5, 5, 0, 0, 0),
     @('LEVEL_SPELL_IMMUNITY', 10, 10, 0, 0, 0),
     @('MAGIC_RESISTANCE', 5, 5, 0, 0, 0),
@@ -116,12 +115,12 @@ $AbilityBonus = @(
     @('IN_FRENZY', 2, 2, 0, 0, 0),
     @('HYPNOTIZED', -10, -10, 0, 0, 0),
 
-    @('const_raises_morale', 7, 7, 0, 0, 0)
+    @('const_raises_morale', 8, 8, 0, 0, 0)
 );
 
-function Get-CreatureJsonData {
+function Read-CreatureJsonData {
 	param ([string]$File);
-	$Raw = Get-Content $File;
+	$Raw = Get-Content $File -ErrorAction Stop;
 	$Trimed = New-Object System.Collections.Generic.List[string];
 	foreach ($Line in $Raw) {
 		$Result = ($Line -replace '//.*$','').Trim();
@@ -141,9 +140,9 @@ function Get-CharCount {
 	}
 	return $Count;
 }
-function Get-CreatureTraitsData {
+function Read-CreatureTraitsData {
 	param ([string]$File);
-	$Raw = Get-Content $File;
+	$Raw = Get-Content $File -ErrorAction Stop;
 	$Trimed = New-Object System.Collections.Generic.List[string];
 	$Skip = 0;
 	$Temp = "";
@@ -163,7 +162,6 @@ function Get-CreatureTraitsData {
 	}
 	return $Trimed.ToArray() | ConvertFrom-Csv -Header @("Singular","Plural","Wood","Mercury","Ore","Sulfur","Crystal","Gems","Gold","FightValue","AIValue","Growth","HordeGrowth","HitPoints","Speed","Attack","Defense","DamageLow","DamageHigh","Shots","Spells","MapLow","MapHigh","AbilityText","Attributes");
 }
-$Traits = Get-CreatureTraitsData -File ../../CRTRAITS.csv;
 function Get-DamageCoefficiency {
 	param ([long]$Attack, [long]$Defense);
 	$AverageSkill = 4;
@@ -182,6 +180,7 @@ function Get-AttackDamage {
 	for ($i = 0; $i -lt 159; $i++) {
 		$Result += Get-DamageCoefficiency -Attack $Attack -Defense $Traits[$i].Defense * (1 - $DefenseReduction);
 	}
+    $Result /= 159
 	return [Math]::Round($Result)
 }
 function Get-DefenseDamage {
@@ -239,7 +238,7 @@ function Merge-CreatureAttribute {
 }
 function Get-CreatureAttributes {
 	param ([string]$Name, [string]$CoreConfig, [string[]]$ModifierConfig);
-	$Core = Get-CreatureJsonData -File $CoreConfig;
+	$Core = Read-CreatureJsonData -File $CoreConfig;
 	if (-not $Core.ContainsKey($Name)) {
 		throw "Incorrect core config file or creature name.";
 	}
@@ -262,7 +261,7 @@ function Get-CreatureAttributes {
 	$ModName = "core:" + $Name;
 	foreach ($File in $ModifierConfig) {
 		try {
-			$CreatureData = Get-CreatureJsonData -File $File;
+			$CreatureData = Read-CreatureJsonData -File $File;
 			if (-not $CreatureData.ContainsKey($ModName)) {
 				throw "Incorrect core config file or creature name.";
 			}
@@ -278,20 +277,23 @@ function Get-FightValue {
 	param ([string]$Name, [string]$CoreConfig, [string[]]$ModifierConfig);
 	$Attributes = Get-CreatureAttributes -Name $Name -CoreConfig $CoreConfig -ModifierConfig $ModifierConfig;
 
-	$TwoHex = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "TWO_HEX_BREATH_ATTACK"
-	$Poison = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "POISON"
-	$Shooter = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "SHOOTER"
+	$TwoHex = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "TWO_HEX_BREATH_ATTACK";
+	$Poison = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "POISON";
+	$Shooter = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "SHOOTER";
 	$AcidBreath = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ACID_BREATH";
-	$DoubleDamage = Test-CreatureAbility -CreatureAttribute $Attributes -Ability "DOUBLE_DAMAGE_CHANCE"
-	$MinimumDamage = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ALWAYS_MINIMUM_DAMAGE"
-	$MaximumDamage = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ALWAYS_MAXIMUM_DAMAGE"
-	$AdditionalAttack = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ADDITIONAL_ATTACK"
-	$ThreeHeadedAttack = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "THREE_HEADED_ATTACK"
-	$AttacksAllAdjacent = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ATTACKS_ALL_ADJACENT"
-	$EnemyDefenceReduction = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ENEMY_DEFENCE_REDUCTION"
-	$GeneralAttackReduction = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "GENERAL_ATTACK_REDUCTION"
+	$DoubleDamage = Test-CreatureAbility -CreatureAttribute $Attributes -Ability "DOUBLE_DAMAGE_CHANCE";
+	$MinimumDamage = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ALWAYS_MINIMUM_DAMAGE";
+	$MaximumDamage = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ALWAYS_MAXIMUM_DAMAGE";
+	$AdditionalAttack = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ADDITIONAL_ATTACK";
+	$ThreeHeadedAttack = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "THREE_HEADED_ATTACK";
+	$AttacksAllAdjacent = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ATTACKS_ALL_ADJACENT";
+	$EnemyDefenceReduction = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ENEMY_DEFENCE_REDUCTION";
+	$GeneralAttackReduction = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "GENERAL_ATTACK_REDUCTION";
+	$Rebitrh = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "REBIRTH";
+
 	$DamageMax = $Attributes.Damage.Max;
 	$DamageMin = $Attributes.Damage.Min;
+	$Health = $Attributes.Health;
 
 	if ($MinimumDamage) { $DamageMax = $DamageMin; }
 	if ($MaximumDamage) { $DamageMin = $DamageMax; }
@@ -302,8 +304,9 @@ function Get-FightValue {
 	if ($TwoHex) { $DamageMax *= 2; }
 	if ($AcidBreath) { $DamageMax += Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "ACID_BREATH"; }
 	if ($Poison) { $DamageMax += Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "POISON"; }
+	if ($Rebitrh) { $Health *= ((100 + $(Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "REBIRTH")) / 100.0); }
 	if ($DoubleDamage) {
-		$DoubleDamageChance = Get-CreatureAbilityValue -CreatureAttribute $Attribute -AbilityType "DOUBLE_DAMAGE_CHANCE";
+		$DoubleDamageChance = Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "DOUBLE_DAMAGE_CHANCE";
 		if ($DoubleDamageChance -gt 0) {
 			$DamageMin += $Attributes.Damage.Max;
 		}
@@ -319,13 +322,13 @@ function Get-FightValue {
 		if ($AttackReduction -gt 1.0) { $AttackReduction = 1.0; }
 	}
 
-	$DamageFactor = 0.35;
+	$DamageFactor = 0.3; # Because we have the "Curse" spell, and sometimes the max damage is conditional.
 	$ProtPowerFight = 0.57; # Less for Fight value
 	$ProtPowerAI = 0.67; # More for AI value
 	$FightRatio = 1;
 	$AIRatio = 0.6;
 	$AttackValue = $(Get-AttackDamage -Attack $Attributes.Attack -DefenseRedution $DefenseReduction) * ($DamageFactor * $DamageMax + (1 - $DamageFactor) * $DamageMin) * 50 + 1;
-	$DefenseValue = (7 / $(Get-DefenseDamage -Defense $Attributes.Defense -AttackReduction $AttackReduction) + 1) * $Attributes.Health + 1;
+	$DefenseValue = (7 / $(Get-DefenseDamage -Defense $Attributes.Defense -AttackReduction $AttackReduction) + 1) * $Health + 1;
 	
 	function Get-Final {
 		param ($AttackValue, $DefenseValue, $ProtPower, $Ratio);
@@ -346,16 +349,37 @@ function Get-FightValue {
 		}
 	}
 
-	if ($Attributes.Speed > 5) {
-		if ($Attributes.Speed > 5) {
+	if ($Attributes.Speed -gt 5) {
+		if ($Attributes.Speed -le 10) {
 			$FinalFight *= 1.05;
 			$FinalAI *= 1.05;
 		}
-		else {
+		elseif ($Attributes.Speed -le 20) {
 			$FinalFight *= 1.10;
 			$FinalAI *= 1.10;
+		}
+		else {
+			$FinalFight *= 1.15;
+			$FinalAI *= 1.15;
 		}
 	}
 
 	return @{ FightValue = $FinalFight; AIValue = $FinalAI; };
+}
+if ($Traits -eq $null) {
+	$TraitsFile = Read-Host -Prompt "CRTRAITS.txt"
+	$Traits = Read-CreatureTraitsData -File $TraitsFile;
+}
+if ($VCMIDir -eq $null) {
+	$VCMIDir = Read-Host -Prompt "VCMI DIR"
+}
+while ($true) {
+	$Query = (Read-Host -Prompt "[LEVEL:TOWN:CREATURE]").Split(":");
+	$Level = $Query[0];
+	$Town = $Query[1];
+	$Creature = $Query[2];
+	try {
+		Write-Host $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Config/Creatures/Lv$Level/$Town.json"));
+	}
+	catch { Write-Host "FAILED"; }
 }

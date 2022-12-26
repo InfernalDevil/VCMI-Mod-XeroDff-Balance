@@ -29,17 +29,14 @@
 	"core:archDevil" :
 	{
 		"attack" : 50,
-		"defense" : 23,
+		"defense" : 20,
 		"damage" :
 		{
 			 "min" : 30,
 			 "max" : 80
 		},
-		"growth" : 1,
-		"hitPoints" : 200,
-		"speed" : 17,
-		"fightValue" : 6000,
-		"aiValue" : 8000,
+		"fightValue" : 5350,
+		"aiValue" : 6338,
 		"cost" :
 		{
 			"gold" : 5000,
