@@ -1,41 +1,6 @@
 {
 	"core:angel" :
 	{
-		"index": 12,
-		"level": 7,
-		"faction": "castle",
-		"abilities":
-		{
-			"hateDevils" :
-			{
-				"type" : "HATE",
-				"subtype" : "creature.devil",
-				"val" : 50
-			},
-			"hateArchDevils" :
-			{
-				"type" : "HATE",
-				"subtype" : "creature.archDevil",
-				"val" : 50
-			},
-			"const_raises_morale" :
-			{
-				"stacking" : "Angels"
-			}
-		},
-		"upgrades": ["archangel"],
-		"graphics" :
-		{
-			"animation": "CANGEL.DEF"
-		},
-		"sound" :
-		{
-			"attack": "ANGLATTK.wav",
-			"defend": "ANGLDFND.wav",
-			"killed": "ANGLKILL.wav",
-			"move": "ANGLMOVE.wav",
-			"wince": "ANGLWNCE.wav"
-		}
 	},
 	"core:archangel" :
 	{

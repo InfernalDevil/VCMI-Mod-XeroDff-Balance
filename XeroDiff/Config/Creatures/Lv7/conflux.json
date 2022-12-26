@@ -1,65 +1,8 @@
 {
-	"firebird" :
+	"core:firebird" :
 	{
-		"index": 130,
-		"level": 7,
-		"faction": "conflux",
-		"upgrades": ["phoenix"],
-		"abilities":
-		{
-			"immuneToFire" :
-			{
-				"type" : "FIRE_IMMUNITY",
-				"subtype" : 0 //this IS important
-			}
-		},
-		"graphics" :
-		{
-			"animation": "CFBIRD.DEF"
-		},
-		"sound" :
-		{
-			"attack": "FIRBATTK.wav",
-			"defend": "FIRBDFND.wav",
-			"killed": "FIRBKILL.wav",
-			"move": "FIRBMOVE.wav",
-			"wince": "FIRBWNCE.wav"
-		}
 	},
-	"phoenix" :
+	"core:phoenix" :
 	{
-		"index": 131,
-		"level": 7,
-		"faction": "conflux",
-		"abilities":
-		{
-			"rebirthOnce" :
-			{
-				"type" : "CASTS",
-				"val" : 1
-			},
-			"immuneToFire" :
-			{
-				"type" : "FIRE_IMMUNITY",
-				"subtype" : 0 //this IS important
-			},
-			"rebirth" : 
-			{
-				"type" : "REBIRTH",
-				"val" : 20
-			}
-		},
-		"graphics" :
-		{
-			"animation": "CPHX.DEF"
-		},
-		"sound" :
-		{
-			"attack": "PHOEATTK.wav",
-			"defend": "PHOEDFND.wav",
-			"killed": "PHOEKILL.wav",
-			"move": "PHOEMOVE.wav",
-			"wince": "PHOEWNCE.wav"
-		}
 	}
 }
