@@ -43,7 +43,8 @@ $AbilityBonus = @(
     @('NO_MORALE', 1, 1, 0, 0, 0),
     @('SELF_MORALE', 2, 2, 0, 0, 0),
     @('SELF_LUCK', 2, 2, 0, 0, 0),
-    @('FLYING', 7, 7, 0, 0, 0),
+    @('FLYING', 5, 5, 0, 0, 0),
+    @('FLYING_ARMY', 5, 5, 0, 0, 0),
     @('SHOOTER', 10, 10, 0, 0, 0),
     @('CHARGE_IMMUNITY', 2, 2, 0, 0, 0),
     @('ADDITIONAL_ATTACK', 0, 0, 0, 0, 0),
@@ -91,7 +92,7 @@ $AbilityBonus = @(
     @('CREATURE_SPELL_POWER', 0, 0, 0, 0, 0),
     @('CREATURE_ENCHANT_POWER', 0, 0, 0, 0, 0),
     @('DAEMON_SUMMONING', 7, 7, 0, 0, 0),
-    @('REBIRTH', 5, 5, 0, 0, 0),
+    @('REBIRTH', 8, 8, 0, 0, 0),
     @('ENCHANTED', 5, 5, 0, 0, 0),
     @('LEVEL_SPELL_IMMUNITY', 10, 10, 0, 0, 0),
     @('MAGIC_RESISTANCE', 5, 5, 0, 0, 0),
@@ -113,7 +114,9 @@ $AbilityBonus = @(
     @('ALWAYS_MAXIMUM_DAMAGE', 7, 7, 0, 0, 0),
     @('ATTACKS_NEAREST_CREATURE', -5, -5, 0, 0, 0),
     @('IN_FRENZY', 2, 2, 0, 0, 0),
-    @('HYPNOTIZED', -10, -10, 0, 0, 0)
+    @('HYPNOTIZED', -10, -10, 0, 0, 0),
+
+    @('const_raises_morale', 7, 7, 0, 0, 0)
 );
 
 function Get-CreatureJsonData {
@@ -223,7 +226,10 @@ function Merge-CreatureAttribute {
 		foreach ($AbilityName in $MergingData.abilities.Keys) {
 			$AbilityData = $MergingData.abilities[$AbilityName];
 			$Tmp = New-Object CreatureAbility;
-			$Tmp.Type = $AbilityData.type;
+			if ($AbilityData.ContainsKey("type")) {
+				$Tmp.Type = $AbilityData.type;
+			}
+			else { $Tmp.Type = $AbilityName; }
 			$Tmp.SubType = $AbilityData.subtype;
 			$Tmp.Value = $AbilityData.val;
 			$CurrentAttribute.Abilities[$AbilityName] = $Tmp;

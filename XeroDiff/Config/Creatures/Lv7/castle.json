@@ -39,7 +39,7 @@
 	},
 	"core:archangel" :
 	{
-		"attack" : 34,
+		"attack" : 33,
 		"defense" : 35,
 		"hitPoints" : 300,
 		"speed" : 17,
