@@ -374,12 +374,11 @@ if ($VCMIDir -eq $null) {
 	$VCMIDir = Read-Host -Prompt "VCMI DIR"
 }
 while ($true) {
-	$Query = (Read-Host -Prompt "[LEVEL:TOWN:CREATURE]").Split(":");
-	$Level = $Query[0];
-	$Town = $Query[1];
-	$Creature = $Query[2];
+	$Query = (Read-Host -Prompt "[TOWN:CREATURE]").Split(":");
+	$Town = $Query[0];
+	$Creature = $Query[1];
 	try {
-		Write-Host $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Config/Creatures/Lv$Level/$Town.json"));
+		Write-Host $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Config/Creatures/$Town.json"));
 	}
 	catch { Write-Host "FAILED"; }
 }
