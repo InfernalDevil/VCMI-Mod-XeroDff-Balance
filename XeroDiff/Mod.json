@@ -4,5 +4,17 @@
 
 	"version" : "0.0.0",
 	"author" : "InfernoDevil",
-	"modType" : "Core Modifier"
+	"modType" : "Other",
+	"contact" : "",
+	"creatures" :
+	[
+		"Config/Inferno/Creatures.json",
+		"Config/Dungeon/Creatures.json",
+		"Config/Necropolis/Creatures.json",
+		"Config/Castle/Creatures.json",
+		"Config/Rampart/Creatures.json",
+		"Config/Stronghold/Creatures.json",
+		"Config/Fortress/Creatures.json",
+		"Config/Conflux/Creatures.json"
+	],
 }
