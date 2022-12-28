@@ -378,7 +378,7 @@ while ($true) {
 	$Town = $Query[0];
 	$Creature = $Query[1];
 	try {
-		Write-Host $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Config/Creatures/$Town.json"));
+		Write-Host $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Content/Config/$Town/Creatures.json"));
 	}
 	catch { Write-Host "FAILED"; }
 }
