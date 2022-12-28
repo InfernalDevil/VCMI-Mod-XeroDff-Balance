@@ -5,7 +5,7 @@
 	"version" : "0.0.0",
 	"author" : "TheInfernoDevil",
 	"modType" : "Other",
-	"contact" : "",
+	"contact" : "https://github.com/TheInfernoDevil/VCMI-Mod-XeroDff-Balance",
 	"creatures" :
 	[
 		"Config/Inferno/Creatures.json",
