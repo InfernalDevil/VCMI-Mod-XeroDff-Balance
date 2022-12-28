@@ -1,3 +1,7 @@
+if ($PSVersionTable.PSEdition -ne "Core") {
+	Write-Error "PowerShell Core is required to run this calculator.";
+	exit 1;
+}
 Add-Type -TypeDefinition @"
 public struct CreatureDamage {
 	public CreatureDamage() { }
