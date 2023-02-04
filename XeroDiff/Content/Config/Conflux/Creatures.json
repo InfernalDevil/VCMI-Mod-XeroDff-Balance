@@ -9,12 +9,12 @@
 		"growth" : 1,
 		"damage" :
 		{
-			 "min" : 40,
+			 "min" : 42,
 			 "max" : 50
 		},
-		"fightValue" : 5095,
+		"fightValue" : 5176,
 		"hitPoints": 300,
-		"aiValue" : 6400,
+		"aiValue" : 6503,
 		"cost" :
 		{
 			"gold" : 5000,
