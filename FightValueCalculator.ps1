@@ -27,10 +27,10 @@ public class CreatureAttribute {
 	public CreatureDamage Damage = new CreatureDamage();
 	public long DamageLow { set => Damage.Min = value; }
 	public long DamageHigh { set => Damage.Max = value; }
-	public long Level = 0; 
+	public long Level = 0;
 	public long Health = 0;
 	public long Speed = 0;
-	public bool IsUpgrade = false;
+	public bool CanUpgrade = false;
 	public System.Collections.Generic.Dictionary<string, CreatureAbility> Abilities = new System.Collections.Generic.Dictionary<string, CreatureAbility>();
 }
 "@
@@ -75,7 +75,6 @@ $AbilityBonus = @(
     @('CHANGES_SPELL_COST_FOR_ENEMY', 7, 7, 0, 0, 0),
     @('SPELL_RESISTANCE_AURA', 5, 5, 0, 0, 0),
     @('HP_REGENERATION', 2, 2, 0, 0, 0),
-    @('FULL_HP_REGENERATION', 3, 3, 0, 0, 0),
     @('MANA_DRAIN', 3, 3, 0, 0, 0),
     @('MANA_CHANNELING', 3, 3, 0, 0, 0),
     @('LIFE_DRAIN', 5, 5, 0, 0, 0),
@@ -238,7 +237,7 @@ function Merge-CreatureAttribute {
 			$CurrentAttribute.Abilities[$AbilityName] = $Tmp;
 		}
 	}
-	if ($MergingData.ContainsKey("upgrades")) { $CurrentAttribute.IsUpgrade = $true; }
+	if ($MergingData.ContainsKey("upgrades")) { $CurrentAttribute.CanUpgrade = $true; }
 }
 function Get-CreatureAttributes {
 	param ([string]$Name, [string]$CoreConfig, [string[]]$ModifierConfig);
@@ -294,6 +293,8 @@ function Get-FightValue {
 	$EnemyDefenceReduction = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "ENEMY_DEFENCE_REDUCTION";
 	$GeneralAttackReduction = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "GENERAL_ATTACK_REDUCTION";
 	$Rebitrh = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "REBIRTH";
+	$Regeneration = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "HP_REGENERATION";
+	$FullRegeneration = Test-CreatureAbility -CreatureAttribute $Attributes -AbilityType "FULL_HP_REGENERATION";
 
 	$DamageMax = $Attributes.Damage.Max;
 	$DamageMin = $Attributes.Damage.Min;
@@ -308,7 +309,9 @@ function Get-FightValue {
 	if ($TwoHex) { $DamageMax *= 2; }
 	if ($AcidBreath) { $DamageMax += Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "ACID_BREATH"; }
 	if ($Poison) { $DamageMax += Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "POISON"; }
+	if ($FullRegeneration) { $Health *= 1.75; } # Roughly trear this as extra 75% max health.
 	if ($Rebitrh) { $Health *= ((100 + $(Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "REBIRTH")) / 100.0); }
+	if ($Regeneration) { $Health += $(Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "HP_REGENERATION") * 0.8; } # Add 80% of regeneration to Health
 	if ($DoubleDamage) {
 		$DoubleDamageChance = Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "DOUBLE_DAMAGE_CHANCE";
 		if ($DoubleDamageChance -gt 0) {
@@ -378,11 +381,89 @@ if ($VCMIDir -eq $null) {
 	$VCMIDir = Read-Host -Prompt "VCMI DIR"
 }
 while ($true) {
-	$Query = (Read-Host -Prompt "[TOWN:CREATURE]").Split(":");
-	$Town = $Query[0];
-	$Creature = $Query[1];
+	Write-Host -NoNewLine ": "
+	$Raw = Read-Host;
 	try {
-		Write-Host $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Content/Config/$Town/Creatures.json"));
+		$Query = $Raw.Substring(1).Trim().Split(":");
+		$Town = $Query[0];
+		$Creature = $Query[1];
+		if ($Raw[0] -eq "?") {
+			try {
+				$Attribute = Get-CreatureAttributes -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Content/Config/$Town/Creatures.json");
+				function Write-Attribute {
+					param([string]$Attribute, [object]$Value);
+					$Color = [Console]::ForegroundColor;
+					[Console]::Write(($Attribute.ToString() + ":").PadRight(9));
+					[Console]::ForegroundColor = 12;
+					[Console]::Write($Value.ToString());
+					[Console]::ForegroundColor = $Color;
+					[Console]::WriteLine();
+                     }
+				if ($Attribute.CanUpgrade) {
+					Write-Attribute -Attribute "LEVEL" -Value $($Attribute.Level.ToString() + " (Upgradable)");
+				}
+				else {
+					Write-Attribute -Attribute "LEVEL" -Value $Attribute.Level;
+				}
+				Write-Attribute -Attribute "HEALTH" -Value $Attribute.Health;
+				Write-Attribute -Attribute "ATTACK" -Value $Attribute.Attack;
+				Write-Attribute -Attribute "DEFENSE" -Value $Attribute.Defense;
+				Write-Attribute -Attribute "DAMAGE" -Value $Attribute.Damage;
+				Write-Attribute -Attribute "SPEED" -Value $Attribute.Speed;
+				Write-Host $("ABILITY [" + $Attribute.Abilities.Count  + "]:");
+				$MaxLength = 0;
+				foreach ($AbilityId in $Attribute.Abilities.Keys) {
+					if ($AbilityId.Length -gt $MaxLength) {
+					$MaxLength = $AbilityId.Length;
+					}
+				}
+				function Write-Ability {
+					param([int]$Pad, [string]$Id, [CreatureAbility]$Ability);
+					$Color = [Console]::ForegroundColor;
+					[Console]::Write("  * " + $Id.Insert($Id.Length, ":").PadRight($Pad));
+					[Console]::ForegroundColor = 10;
+					[Console]::Write($Ability.Type.ToString());
+					if ($Ability.SubType -ne $null) {
+						[Console]::ForegroundColor = 13;
+						[Console]::Write(" " + $Ability.SubType.ToString());
+					}
+					[Console]::ForegroundColor = $Color;
+					[Console]::Write(": ");
+					[Console]::ForegroundColor = 12;
+					[Console]::Write($Ability.Value);
+					[Console]::ForegroundColor = $Color;
+					[Console]::WriteLine();
+                     }
+				foreach ($AbilityId in $Attribute.Abilities.Keys) {
+					Write-Ability -Pad $($MaxLength + 2) -Id $AbilityId -Ability $Attribute.Abilities[$AbilityId];
+				}
+			}
+			catch { Write-Host "FAILED"; }
+		}
+		elseif ($Raw[0] -eq "!") {
+			try {
+				$Result = $(Get-FightValue -Name $Creature -CoreConfig "$VCMIDir/config/creatures/$Town.json" -ModifierConfig @("XeroDiff/Content/Config/$Town/Creatures.json"));
+				function Write-Result {
+					param([Hashtable]$Result);
+					$Color = [Console]::ForegroundColor;
+					[Console]::Write("Fight Value: ");
+					[Console]::ForegroundColor = 12;
+					[Console]::Write($Result["FightValue"].ToString("0.00"));
+					[Console]::ForegroundColor = $Color;
+					[Console]::WriteLine();
+					[Console]::Write("AI Value:    ");
+					[Console]::ForegroundColor = 12;
+					[Console]::Write($Result["AIValue"].ToString("0.00"));
+					[Console]::ForegroundColor = $Color;
+					[Console]::WriteLine();
+				}
+				Write-Result -Result $Result
+			}
+			catch { Write-Host "FAILED"; }
+		}
+		else {
+			Write-Host "UNKNOWN";
+		}
 	}
-	catch { Write-Host "FAILED"; }
+	catch { Write-Host "INVALID"; }
 }
