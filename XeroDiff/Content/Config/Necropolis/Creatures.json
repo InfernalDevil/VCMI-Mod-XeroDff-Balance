@@ -4,16 +4,16 @@
 	},
 	"core:ghostDragon" :
 	{
-		"attack" : 35,
-		"defense" : 32,
-		"hitPoints": 190,
+		"attack" : 32,
+		"defense" : 30,
+		"hitPoints": 180,
 		"damage" :
 		{
-			 "min" : 33,
-			 "max" : 50
+			 "min" : 32,
+			 "max" : 45
 		},
-		"fightValue" : 5124,
-		"aiValue" : 6388,
+		"fightValue" : 5094,
+		"aiValue" : 6400,
 		"cost" :
 		{
 			"gold" : 5000,
@@ -26,22 +26,17 @@
 				"type" : "FULL_HP_REGENERATION",
 				"subtype" : 1
 			},
-			"regeneration" :
-			{
-				"type" : "HP_REGENERATION",
-				"val" : 1
-			},
 			"age" :
 			{
 				"type" : "SPELL_AFTER_ATTACK",
 				"subtype" : "spell.age",
-				"val" : 25
+				"val" : 30
 			},
 			"deathStare" :
 			{
 				"type" : "DEATH_STARE",
-				"subtype" : 1,
-				"val" : 33
+				"subtype" : 0,
+				"val" : 15
 			}
 		}
 	}
