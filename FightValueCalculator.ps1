@@ -309,9 +309,9 @@ function Get-FightValue {
 	if ($TwoHex) { $DamageMax *= 2; }
 	if ($AcidBreath) { $DamageMax += Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "ACID_BREATH"; }
 	if ($Poison) { $DamageMax += Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "POISON"; }
-	if ($FullRegeneration) { $Health *= 1.8; } # Roughly trear this as extra 80% max health.
+	if ($FullRegeneration) { $Health *= 2; } # Roughly trear this as extra 100% max health. (Not accurate, but no better solution yet)
 	if ($Rebitrh) { $Health *= ((100 + $(Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "REBIRTH")) / 100.0); }
-	if ($Regeneration) { $Health += $(Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "HP_REGENERATION") * 0.9; } # Add 90% of regeneration to Health
+	if ($Regeneration) { $Health += $(Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "HP_REGENERATION"); } # Add regeneration to Health
 	if ($DoubleDamage) {
 		$DoubleDamageChance = Get-CreatureAbilityValue -CreatureAttribute $Attributes -AbilityType "DOUBLE_DAMAGE_CHANCE";
 		if ($DoubleDamageChance -gt 0) {
