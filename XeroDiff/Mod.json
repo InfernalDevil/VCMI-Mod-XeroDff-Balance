@@ -15,6 +15,7 @@
 		"Config/Rampart/Creatures.json",
 		"Config/Stronghold/Creatures.json",
 		"Config/Fortress/Creatures.json",
+		"Config/Tower/Creatures.json",
 		"Config/Conflux/Creatures.json"
 	],
 }
