@@ -12,8 +12,8 @@
 			 "min" : 32,
 			 "max" : 45
 		},
-		"fightValue" : 5094,
-		"aiValue" : 6400,
+		"fightValue" : 3604,
+		"aiValue" : 4225,
 		"cost" :
 		{
 			"gold" : 5000,
@@ -21,10 +21,10 @@
 		},
 		"abilities" :
 		{
-			"fullRegeneration" :
+			"lifeDrain" :
 			{
-				"type" : "FULL_HP_REGENERATION",
-				"subtype" : 1
+				"type" : "LIFE_DRAIN",
+				"val" : 100
 			},
 			"age" :
 			{
@@ -36,7 +36,7 @@
 			{
 				"type" : "DEATH_STARE",
 				"subtype" : 0,
-				"val" : 15
+				"val" : 100
 			}
 		}
 	}
